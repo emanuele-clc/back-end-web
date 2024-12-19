@@ -1,7 +1,7 @@
 package com.unical.backendweb.rest;
 
 import com.unical.backendweb.model.CampoResponse;
-import com.unical.backendweb.service.CampoService;  // Assumendo tu abbia un servizio per la gestione dei campi
+import com.unical.backendweb.service.CampoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/api")
 public class CampoController {
 
-    private final CampoService campoService;  // Servizio per gestire i campi
+    private final CampoService campoService;
     private Logger logger = LoggerFactory.getLogger(CampoController.class);
 
     public CampoController(CampoService campoService) {
@@ -23,14 +23,15 @@ public class CampoController {
     }
 
     // Ottieni tutti i campi
-    @GetMapping(path = "/book-field", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/fields", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<CampoResponse>> getAllCampi() {
         logger.info("getAllCampi has been called");
-        return ResponseEntity.ok(campoService.getAllCampi());
+        List<CampoResponse> campi = campoService.getAllCampi();
+        return ResponseEntity.ok(campi);
     }
 
     // Ottieni un campo per ID
-    @GetMapping(path = "/book-field/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/fields/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CampoResponse> getCampoById(@PathVariable int id) {
         logger.info("getCampoById has been called for id: " + id);
         CampoResponse campo = campoService.getCampoById(id);
@@ -42,12 +43,24 @@ public class CampoController {
     }
 
     // Modifica lo stato di occupazione di un campo
-    @PatchMapping(path = "/book-field/{id}/occupato", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(path = "/fields/{id}/occupato", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CampoResponse> updateCampoOccupato(@PathVariable int id, @RequestParam boolean isOccupied) {
         logger.info("updateCampoOccupato has been called for id: " + id);
         CampoResponse updatedCampo = campoService.updateCampoOccupato(id, isOccupied);
         if (updatedCampo != null) {
             return ResponseEntity.ok(updatedCampo);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Prenota un campo per un giocatore (aggiorna il campo con idGiocatore1 e idGiocatore2)
+    @PostMapping(path = "/fields/{id}/prenota", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CampoResponse> prenotaCampo(@PathVariable int id, @RequestBody CampoResponse campoRequest) {
+        logger.info("Prenota campo for id: " + id);
+        CampoResponse campoPrenotato = campoService.prenotaCampo(id, campoRequest);
+        if (campoPrenotato != null) {
+            return ResponseEntity.ok(campoPrenotato);
         } else {
             return ResponseEntity.notFound().build();
         }
