@@ -1,7 +1,7 @@
 package com.unical.backendweb.service;
 
 import com.unical.backendweb.dao.DBManager;
-import com.unical.backendweb.model.User;
+import com.unical.backendweb.model.RequestResponse;
 import com.unical.backendweb.model.UsersResponse;
 import org.springframework.stereotype.Service;
 
@@ -17,16 +17,17 @@ public class UsersService {
 
     // Inizializzare con alcuni utenti di esempio
     public UsersService() {
-        List<User> temp= DBManager.getInstance().getUSerDao().findAll();
-        for (User user : temp) {
-            users.add(createUserResponse(user.getId(), user.getNome(),user.getCognome(),user.getUsername(),
-                    user.getEmail(),user.getNumero(),user.getFoto_profilo(), user.getLivello()));
-        }
+        this.users = DBManager.getInstance().getUSerDao().findAll();
     }
 
     // Ottieni tutti gli utenti
     public List<UsersResponse> getAllUsers() {
+        this.users = DBManager.getInstance().getUSerDao().findAll();
         return users;
+    }
+
+    public RequestResponse banUser(int id) {
+        return DBManager.getInstance().getUSerDao().banUser(id);
     }
 
     // Filtra gli utenti in base ai parametri
@@ -46,17 +47,18 @@ public class UsersService {
                 .orElse(null);
     }
 
-    // Metodo per creare un oggetto UsersResponse
-    private UsersResponse createUserResponse(int id, String nome, String cognome, String username, String email, String numero, String immagineProfilo, int livello) {
-        UsersResponse response = new UsersResponse();
-        response.id = id;
-        response.nome = nome;
-        response.cognome = cognome;
-        response.username = username;
-        response.email = email;
-        response.numero = numero;
-        response.immagineProfilo = immagineProfilo;
-        response.livello = livello;
-        return response;
-    }
+
+//    // Metodo per creare un oggetto UsersResponse
+//    private UsersResponse createUserResponse(int id, String nome, String cognome, String username, String email, String numero, String immagineProfilo, int livello) {
+//        UsersResponse response = new UsersResponse();
+//        response.id = id;
+//        response.nome = nome;
+//        response.cognome = cognome;
+//        response.username = username;
+//        response.email = email;
+//        response.numero = numero;
+//        response.immagineProfilo = immagineProfilo;
+//        response.livello = livello;
+//        return response;
+//    }
 }

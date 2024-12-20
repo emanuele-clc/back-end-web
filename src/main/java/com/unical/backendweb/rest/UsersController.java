@@ -1,6 +1,7 @@
 package com.unical.backendweb.rest;
 
 import com.unical.backendweb.exceptions.user.UserNotFoundException;
+import com.unical.backendweb.model.RequestResponse;
 import com.unical.backendweb.model.UsersResponse;
 import com.unical.backendweb.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,11 @@ public class UsersController {
             return usersService.getAllUsers();
         }
         return usersService.filterUsers(nome, cognome, username);
+    }
+
+    @GetMapping("/ban/{id}")
+    public RequestResponse banUsers(@PathVariable int id) {
+        return usersService.banUser(id);
     }
 
     // Endpoint per ottenere un singolo utente tramite ID

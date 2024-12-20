@@ -1,6 +1,5 @@
 package com.unical.backendweb.rest;
 
-import com.unical.backendweb.model.User;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,7 +14,7 @@ public class Auth {
     private Object service;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody @Valid User user) {
-        return ResponseEntity.ok(user.getNome());
+    public ResponseEntity<String> register(@RequestBody @Valid String nome) {
+        return ResponseEntity.ok(nome);
     }
 }

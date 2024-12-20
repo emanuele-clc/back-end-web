@@ -1,6 +1,8 @@
 package com.unical.backendweb.dao;
 
-import com.unical.backendweb.model.User;
+import com.unical.backendweb.model.RequestResponse;
+import com.unical.backendweb.model.UsersResponse;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,62 +15,22 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public void save(User user) {
-        String query = "INSERT INTO users (nome, cognome, email, password) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, user.getNome());
-            stmt.setString(2, user.getCognome());
-            stmt.setString(3, user.getEmail());
-            stmt.setString(4, user.getPassword());
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public User findByEmail(String email) {
-        String query = "SELECT * FROM users WHERE email = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, email);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return new User(
-                        rs.getInt("id"),
-                        rs.getString("nome"),
-                        rs.getString("cognome"),
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getString("email"),
-                        rs.getString("numero"),
-                        rs.getString("immagine_profilo"),
-                        rs.getInt("livello")
-                );
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
-    public List<User> findAll() {
-        List<User> users = new ArrayList<>();
+    public List<UsersResponse> findAll() {
+        List<UsersResponse> users = new ArrayList<>();
         String query = "SELECT * FROM giocatore";
         try (Statement stmt = connection.createStatement()) {
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
-                users.add(new User(
-                        rs.getInt("id"),
-                        rs.getString("nome"),
-                        rs.getString("cognome"),
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getString("email"),
-                        rs.getString("numero"),
-                        rs.getString("immagine_profilo"),
-                        rs.getInt("livello")
-                ));
+                UsersResponse user = new UsersResponse();
+                user.id = rs.getInt("id");
+                user.nome = rs.getString("nome");
+                user.cognome = rs.getString("cognome");
+                user.username = rs.getString("username");
+                user.email = rs.getString("email");
+                user.numero = rs.getString("numero");
+                user.immagineProfilo = rs.getString("immagine_profilo");
+                user.livello = rs.getInt("livello");
+                users.add(user);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -77,18 +39,24 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public boolean exists(String email) {
-        String query = "SELECT COUNT(*) FROM users WHERE email = ?";
+    public RequestResponse banUser(int id){
+        String query = "DELETE FROM giocatore WHERE id = ?";
+        RequestResponse r = new RequestResponse();
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, email);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
+            stmt.setInt(1, id); // Specifica il parametro 'id'
+            int righe_modificate = stmt.executeUpdate();
+            if(righe_modificate == 1){
+                r.esito = true;
+                r.messaggio = "L'utente " + id + " è stato bannato con successo";
+            } else {
+                r.esito = false;
+                r.messaggio = "L'utente " + id + " non è stato bannato";
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            r.esito = false;
+            r.messaggio = e.getMessage();
         }
-        return false;
+        return r;
     }
 
 }

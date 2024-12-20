@@ -8,7 +8,7 @@ public class DBManager {
 
     private static final String URL = "jdbc:postgresql://localhost:5432/progetto";
     private static final String USER = "postgres";
-    private static final String PASSWORD = "yourpass"; //provapush
+    private static final String PASSWORD = "axelblaze"; //provapush
 
     static Connection con = null;
     public static Connection getConnection(){
@@ -28,24 +28,11 @@ public class DBManager {
         }
         return instance;
     }
+
     public UserDAO getUSerDao(){
         if (userDAO == null) {
             userDAO = new UserDAOImpl(getConnection());
         }
         return  userDAO;
-    }
-
-    public static void main(String[] args) {
-        Connection con = DBManager.getInstance().getConnection();
-        try {
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("select * from campo");
-            while (rs.next()){
-                System.out.println(rs.getString(2));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
     }
 }
