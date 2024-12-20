@@ -31,7 +31,7 @@ public class UsersController {
 
     // Endpoint per ottenere un singolo utente tramite ID
     @GetMapping("/{id}")
-    public UsersResponse getUserById(@PathVariable Long id) {
+    public UsersResponse getUserById(@PathVariable int id) {
         UsersResponse user = usersService.getUserById(id);
 
         if (user == null) {

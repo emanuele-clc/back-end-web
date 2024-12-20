@@ -34,10 +34,15 @@ public class UserDAOImpl implements UserDAO {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 return new User(
+                        rs.getInt("id"),
                         rs.getString("nome"),
                         rs.getString("cognome"),
+                        rs.getString("username"),
+                        rs.getString("password"),
                         rs.getString("email"),
-                        rs.getString("password")
+                        rs.getString("numero"),
+                        rs.getString("immagine_profilo"),
+                        rs.getInt("livello")
                 );
             }
         } catch (SQLException e) {
@@ -49,15 +54,20 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
-        String query = "SELECT * FROM users";
+        String query = "SELECT * FROM giocatore";
         try (Statement stmt = connection.createStatement()) {
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 users.add(new User(
+                        rs.getInt("id"),
                         rs.getString("nome"),
                         rs.getString("cognome"),
+                        rs.getString("username"),
+                        rs.getString("password"),
                         rs.getString("email"),
-                        rs.getString("password")
+                        rs.getString("numero"),
+                        rs.getString("immagine_profilo"),
+                        rs.getInt("livello")
                 ));
             }
         } catch (SQLException e) {
@@ -80,4 +90,5 @@ public class UserDAOImpl implements UserDAO {
         }
         return false;
     }
+
 }

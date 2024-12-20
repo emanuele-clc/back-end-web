@@ -6,15 +6,15 @@ public class DBManager {
     private static DBManager instance = null;
     private UserDAO userDAO = null;
 
-    private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
+    private static final String URL = "jdbc:postgresql://localhost:5432/progetto";
     private static final String USER = "postgres";
-    private static final String PASSWORD = "0603";
+    private static final String PASSWORD = "axelblaze"; //provapush
 
     static Connection con = null;
     public static Connection getConnection(){
         if (con == null){
             try {
-                con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "0603");
+                con = DriverManager.getConnection(URL, USER, PASSWORD);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -39,9 +39,9 @@ public class DBManager {
         Connection con = DBManager.getInstance().getConnection();
         try {
             Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("select * from users");
-            if (rs.next()){
-                System.out.println(rs.getString(1));
+            ResultSet rs = st.executeQuery("select * from campo");
+            while (rs.next()){
+                System.out.println(rs.getString(2));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
