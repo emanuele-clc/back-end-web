@@ -1,11 +1,11 @@
 package com.unical.backendweb.dao;
 
-import com.unical.backendweb.model.User;
+import com.unical.backendweb.model.RequestResponse;
+import com.unical.backendweb.model.UsersResponse;
+
 import java.util.List;
 
 public interface UserDAO {
-    void save(User user);
-    User findByEmail(String email);
-    List<User> findAll();
-    boolean exists(String email);
+    RequestResponse banUser(int id);
+    List<UsersResponse> findAll();
 }

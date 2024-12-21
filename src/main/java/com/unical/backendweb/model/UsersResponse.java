@@ -5,12 +5,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UsersResponse {
-    public Long id;
+    public int id;
     public String nome;
     public String cognome;
     public String username;
     public String email;
-    public int numero;
+    public String numero;
     public String immagineProfilo;
     public int livello;
 }
