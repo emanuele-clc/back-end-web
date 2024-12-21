@@ -30,6 +30,7 @@ public class UserDAOImpl implements UserDAO {
                 user.numero = rs.getString("numero");
                 user.immagineProfilo = rs.getString("immagine_profilo");
                 user.livello = rs.getInt("livello");
+                user.bannato = rs.getBoolean("bannato");
                 users.add(user);
             }
         } catch (SQLException e) {
@@ -40,17 +41,40 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public RequestResponse banUser(int id){
-        String query = "DELETE FROM giocatore WHERE id = ?";
+        String query = "UPDATE public.giocatore\n" +
+                "SET bannato = TRUE\n" +
+                "WHERE id = " + id;
         RequestResponse r = new RequestResponse();
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, id); // Specifica il parametro 'id'
-            int righe_modificate = stmt.executeUpdate();
+        try (Statement stmt = connection.createStatement()) {
+            int righe_modificate = stmt.executeUpdate(query);
             if(righe_modificate == 1){
                 r.esito = true;
                 r.messaggio = "L'utente " + id + " è stato bannato con successo";
             } else {
                 r.esito = false;
                 r.messaggio = "L'utente " + id + " non è stato bannato";
+            }
+        } catch (SQLException e) {
+            r.esito = false;
+            r.messaggio = e.getMessage();
+        }
+        return r;
+    }
+
+    @Override
+    public RequestResponse unbanUser(int id){
+        String query = "UPDATE public.giocatore\n" +
+                "SET bannato = FALSE\n" +
+                "WHERE id = " + id;
+        RequestResponse r = new RequestResponse();
+        try (Statement stmt = connection.createStatement()) {
+            int righe_modificate = stmt.executeUpdate(query);
+            if(righe_modificate == 1){
+                r.esito = true;
+                r.messaggio = "L'utente " + id + " è stato sbannato con successo";
+            } else {
+                r.esito = false;
+                r.messaggio = "L'utente " + id + " non è stato sbannato";
             }
         } catch (SQLException e) {
             r.esito = false;

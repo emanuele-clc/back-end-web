@@ -13,4 +13,5 @@ public class UsersResponse {
     public String numero;
     public String immagineProfilo;
     public int livello;
+    public boolean bannato;
 }

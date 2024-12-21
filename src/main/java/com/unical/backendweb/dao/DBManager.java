@@ -6,9 +6,9 @@ public class DBManager {
     private static DBManager instance = null;
     private UserDAO userDAO = null;
 
-    private static final String URL = "jdbc:postgresql://localhost:5432/nuovo_db";
+    private static final String URL = "jdbc:postgresql://localhost:5432/progetto";
     private static final String USER = "postgres";
-    private static final String PASSWORD = "0603"; //provapush
+    private static final String PASSWORD = "axelblaze"; //provapush
 
     static Connection con = null;
     public static Connection getConnection(){

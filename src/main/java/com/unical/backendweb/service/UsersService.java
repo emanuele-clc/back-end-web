@@ -30,6 +30,10 @@ public class UsersService {
         return DBManager.getInstance().getUSerDao().banUser(id);
     }
 
+    public RequestResponse unbanUser(int id) {
+        return DBManager.getInstance().getUSerDao().unbanUser(id);
+    }
+
     // Filtra gli utenti in base ai parametri
     public List<UsersResponse> filterUsers(String nome, String cognome, String username) {
         return users.stream()

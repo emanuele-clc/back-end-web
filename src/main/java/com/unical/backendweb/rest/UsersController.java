@@ -35,6 +35,11 @@ public class UsersController {
         return usersService.banUser(id);
     }
 
+    @GetMapping("/unban/{id}")
+    public RequestResponse unbanUsers(@PathVariable int id) {
+        return usersService.unbanUser(id);
+    }
+
     // Endpoint per ottenere un singolo utente tramite ID
     @GetMapping("/{id}")
     public UsersResponse getUserById(@PathVariable int id) {

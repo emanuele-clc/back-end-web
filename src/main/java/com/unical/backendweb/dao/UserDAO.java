@@ -6,6 +6,7 @@ import com.unical.backendweb.model.UsersResponse;
 import java.util.List;
 
 public interface UserDAO {
-    RequestResponse banUser(int id);
     List<UsersResponse> findAll();
+    RequestResponse banUser(int id);
+    RequestResponse unbanUser(int id);
 }
