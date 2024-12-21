@@ -32,16 +32,15 @@ public class CampoController {
 
     // Ottieni un campo per ID
     @GetMapping(path = "/fields/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CampoResponse> getCampoById(@PathVariable int id) {
-        logger.info("getCampoById has been called for id: " + id);
-        CampoResponse campo = campoService.getCampoById(id);
-        if (campo != null) {
-            return ResponseEntity.ok(campo);
+    public ResponseEntity<List<CampoResponse>> getCampiById(@PathVariable int id) {
+        logger.info("getCampiById has been called for id: " + id);
+        List<CampoResponse> campi = campoService.getCampoById(id);
+        if (!campi.isEmpty()) {
+            return ResponseEntity.ok(campi);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
-
     // Modifica lo stato di occupazione di un campo
     @PatchMapping(path = "/fields/{id}/occupato", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CampoResponse> updateCampoOccupato(@PathVariable int id, @RequestParam boolean isOccupied) {
