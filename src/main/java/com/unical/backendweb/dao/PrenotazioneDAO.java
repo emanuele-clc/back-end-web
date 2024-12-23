@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface PrenotazioneDAO {
-    List<PrenotazioneResponse> findAll();
+    List<PrenotazioneResponse> findAll(LocalDate data);
+    void mergePrenotazioni(List<PrenotazioneResponse> prenotazioni, LocalDate data);
     RequestResponse rimuoviPrenotazione(int id_campo, LocalDate data, int time);
 }

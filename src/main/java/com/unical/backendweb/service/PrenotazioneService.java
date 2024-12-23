@@ -16,12 +16,11 @@ public class PrenotazioneService {
 
     // Costruttore: inizializza i campi
     public PrenotazioneService() {
-        initCampi();
     }
 
     // Metodo per inizializzare i campi
-    private void initCampi() {
-        this.campi = DBManager.getInstance().getPrenotazioneDAO().findAll();
+    private void initCampi(LocalDate data) {
+        this.campi = DBManager.getInstance().getPrenotazioneDAO().findAll(data);
         int[] orari = {17, 18, 19, 20};
 
         // Itera su ogni orario
@@ -50,15 +49,14 @@ public class PrenotazioneService {
     }
 
     // Metodo per ottenere tutti i campi
-    public List<PrenotazioneResponse> getAllCampi() {
-        initCampi();
+    public List<PrenotazioneResponse> getAllCampi(LocalDate data) {
+        initCampi(data);
         return campi;
     }
 
     // Metodo per ottenere i campi per ID (modificato per restituire tutti i campi con lo stesso ID)
-    public List<PrenotazioneResponse> getCampoById(int id) {
-        initCampi();
-        return getAllCampi().stream()
+    public List<PrenotazioneResponse> getCampoById(int id, LocalDate data) {
+        return getAllCampi(data).stream()
                 .filter(campo -> campo.id == id)
                 .collect(Collectors.toList());
     }

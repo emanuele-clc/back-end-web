@@ -22,16 +22,18 @@ public class CampoController {
     }
 
     // Ottieni tutti i campi
-    @GetMapping(path = "/fields", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<PrenotazioneResponse>> getAllCampi() {
-        List<PrenotazioneResponse> campi = campoService.getAllCampi();
+    @GetMapping(path = "/fields/{data}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<PrenotazioneResponse>> getAllCampi(@PathVariable String data) {
+        LocalDate LD = LocalDate.parse(data);
+        List<PrenotazioneResponse> campi = campoService.getAllCampi(LD);
         return ResponseEntity.ok(campi);
     }
 
     // Ottieni un campo per ID
-    @GetMapping(path = "/fields/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<PrenotazioneResponse>> getCampiById(@PathVariable int id) {
-        List<PrenotazioneResponse> campi = campoService.getCampoById(id);
+    @GetMapping(path = "/fields/{data}/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<PrenotazioneResponse>> getCampiById( @PathVariable String data, @PathVariable int id) {
+        LocalDate LD = LocalDate.parse(data);
+        List<PrenotazioneResponse> campi = campoService.getCampoById(id, LD);
         if (!campi.isEmpty()) {
             return ResponseEntity.ok(campi);
         } else {
@@ -44,7 +46,6 @@ public class CampoController {
         LocalDate LD = LocalDate.parse(date);
         return campoService.rimuoviPrenotazione(id,LD,orario);
     }
-
 //    // Prenota un campo per un giocatore (aggiorna il campo con idGiocatore1 e idGiocatore2)
 //    @PostMapping(path = "/fields/{id}/prenota", produces = MediaType.APPLICATION_JSON_VALUE)
 //    public ResponseEntity<PrenotazioneResponse> prenotaCampo(@PathVariable int id, @RequestBody PrenotazioneResponse campoRequest) {
