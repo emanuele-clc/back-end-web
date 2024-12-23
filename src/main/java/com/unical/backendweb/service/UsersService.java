@@ -33,7 +33,7 @@ public class UsersService {
     }
 
     public RequestResponse unbanUser(int id) {
-        RequestResponse response = DBManager.getInstance().getUSerDao().banUser(id);
+        RequestResponse response = DBManager.getInstance().getUSerDao().unbanUser(id);
         getAllUsers();
         return response;
     }
