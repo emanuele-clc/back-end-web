@@ -17,17 +17,13 @@ public class UsersController {
     @Autowired
     private UsersService usersService;
 
-    // Endpoint per ottenere tutti gli utenti o filtrarli per nome, cognome, username
+    // Endpoint per ottenere tutti gli utenti
     @GetMapping
     public List<UsersResponse> getUsers(
-            @RequestParam(value = "nome", defaultValue = "") String nome,
-            @RequestParam(value = "cognome", defaultValue = "") String cognome,
-            @RequestParam(value = "username", defaultValue = "") String username) {
-
-        if (nome.isEmpty() && cognome.isEmpty() && username.isEmpty()) {
-            return usersService.getAllUsers();
-        }
-        return usersService.filterUsers(nome, cognome, username);
+        @RequestParam(value = "nome", defaultValue = "") String nome,
+        @RequestParam(value = "cognome", defaultValue = "") String cognome,
+        @RequestParam(value = "username", defaultValue = "") String username) {
+        return usersService.getAllUsers();
     }
 
     @GetMapping("/ban/{id}")
@@ -48,7 +44,6 @@ public class UsersController {
         if (user == null) {
             throw new UserNotFoundException("Utente con ID " + id + " non trovato.");
         }
-
         return user;
     }
 }

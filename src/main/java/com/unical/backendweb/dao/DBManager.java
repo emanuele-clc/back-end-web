@@ -5,6 +5,7 @@ import java.sql.*;
 public class DBManager {
     private static DBManager instance = null;
     private UserDAO userDAO = null;
+    private PrenotazioneDAO prenotazioneDAO = null;
 
     private static final String URL = "jdbc:postgresql://localhost:5432/progetto";
     private static final String USER = "postgres";
@@ -34,5 +35,12 @@ public class DBManager {
             userDAO = new UserDAOImpl(getConnection());
         }
         return  userDAO;
+    }
+
+    public PrenotazioneDAO getPrenotazioneDAO() {
+        if (prenotazioneDAO == null) {
+            prenotazioneDAO = new PrenotazioneDAOImpl(getConnection());
+        }
+        return prenotazioneDAO;
     }
 }

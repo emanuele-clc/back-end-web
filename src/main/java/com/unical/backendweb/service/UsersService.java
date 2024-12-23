@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class UsersService {
 
     // Lista statica di utenti per simulare il database
-    private List<UsersResponse> users = new ArrayList<>();
+    private List<UsersResponse> users;
 
     // Inizializzare con alcuni utenti di esempio
     public UsersService() {
@@ -27,23 +27,17 @@ public class UsersService {
     }
 
     public RequestResponse banUser(int id) {
-        return DBManager.getInstance().getUSerDao().banUser(id);
+        RequestResponse response = DBManager.getInstance().getUSerDao().banUser(id);
+        getAllUsers();
+        return response;
     }
 
     public RequestResponse unbanUser(int id) {
-        return DBManager.getInstance().getUSerDao().unbanUser(id);
+        RequestResponse response = DBManager.getInstance().getUSerDao().banUser(id);
+        getAllUsers();
+        return response;
     }
 
-    // Filtra gli utenti in base ai parametri
-    public List<UsersResponse> filterUsers(String nome, String cognome, String username) {
-        return users.stream()
-                .filter(user -> user.nome.contains(nome) ||
-                        user.cognome.contains(cognome) ||
-                        user.username.contains(username))
-                .collect(Collectors.toList());
-    }
-
-    // Ottieni un singolo utente tramite il suo ID
     public UsersResponse getUserById(int id) {
         return users.stream()
                 .filter(user -> user.id==id)
@@ -51,18 +45,13 @@ public class UsersService {
                 .orElse(null);
     }
 
-
-//    // Metodo per creare un oggetto UsersResponse
-//    private UsersResponse createUserResponse(int id, String nome, String cognome, String username, String email, String numero, String immagineProfilo, int livello) {
-//        UsersResponse response = new UsersResponse();
-//        response.id = id;
-//        response.nome = nome;
-//        response.cognome = cognome;
-//        response.username = username;
-//        response.email = email;
-//        response.numero = numero;
-//        response.immagineProfilo = immagineProfilo;
-//        response.livello = livello;
-//        return response;
+    //    // Filtra gli utenti in base ai parametri
+//    public List<UsersResponse> filterUsers(String nome, String cognome, String username) {
+//        return users.stream()
+//                .filter(user -> user.nome.contains(nome) ||
+//                        user.cognome.contains(cognome) ||
+//                        user.username.contains(username))
+//                .collect(Collectors.toList());
 //    }
+    // Ottieni un singolo utente tramite il suo ID
 }
