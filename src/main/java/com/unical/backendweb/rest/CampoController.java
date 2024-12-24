@@ -46,15 +46,20 @@ public class CampoController {
         LocalDate LD = LocalDate.parse(date);
         return campoService.rimuoviPrenotazione(id,LD,orario);
     }
-//    // Prenota un campo per un giocatore (aggiorna il campo con idGiocatore1 e idGiocatore2)
-//    @PostMapping(path = "/fields/{id}/prenota", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<PrenotazioneResponse> prenotaCampo(@PathVariable int id, @RequestBody PrenotazioneResponse campoRequest) {
-//        PrenotazioneResponse campoPrenotato = campoService.prenotaCampo(id, campoRequest);
-//        if (campoPrenotato != null) {
-//            return ResponseEntity.ok(campoPrenotato);
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
+
+    // Prenota un campo per un giocatore (aggiorna il campo con idGiocatore1 e idGiocatore2)
+    @GetMapping(path = "/fields/prenota", produces = MediaType.APPLICATION_JSON_VALUE)
+    public RequestResponse prenotaCampo(@RequestParam int id,
+                                        @RequestParam String date,
+                                        @RequestParam int time,
+                                        @RequestParam int id_a,
+                                        @RequestParam(required = false) Integer id_b,
+                                        @RequestParam int tipoprenotazione) {
+        System.out.println(id+":"+date+":"+time+":"+id_a+":"+id_b+":"+tipoprenotazione);
+        RequestResponse r = new RequestResponse();
+        r.esito = true;
+        r.messaggio = "Grande";
+        return r;
+    }
 
 }
