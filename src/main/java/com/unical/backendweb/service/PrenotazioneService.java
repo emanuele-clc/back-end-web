@@ -65,17 +65,9 @@ public class PrenotazioneService {
         return DBManager.getInstance().getPrenotazioneDAO().rimuoviPrenotazione(id_campo, data, time);
     }
 
-//    // Metodo per prenotare un campo (assegnando i giocatori)
-//    public PrenotazioneResponse prenotaCampo(int id_campo, PrenotazioneResponse campoRequest) {
-//        PrenotazioneResponse campo = getCampoById(id_campo).stream().findFirst().orElse(null);
-//        if (campo != null && !campo.isOccupied) {
-//            // Se il campo non è occupato, aggiorniamo i giocatori e lo stato di occupazione
-//            campo.idGiocatore1 = campoRequest.idGiocatore1;
-//            campo.idGiocatore2 = campoRequest.idGiocatore2;
-//            campo.idMaestro = campoRequest.idMaestro;
-//            campo.isOccupied = true;  // Imposta il campo come occupato
-//        }
-//        return campo;  // Restituisce il campo prenotato o null se non trovato
-//    }
-//
+    // Metodo per prenotare un campo (assegnando i giocatori)
+    public RequestResponse prenotaCampo(int id, String date, int time, int id_a, Integer id_b, int tipoprenotazione){
+        return DBManager.getInstance().getPrenotazioneDAO().prenotaCampo(id,date,time,id_a,id_b,tipoprenotazione);
+    }
+
 }

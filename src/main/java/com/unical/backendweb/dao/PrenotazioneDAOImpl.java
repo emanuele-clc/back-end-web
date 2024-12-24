@@ -108,4 +108,50 @@ public class PrenotazioneDAOImpl implements PrenotazioneDAO {
         }
         return r;
     }
+
+    @Override
+    public RequestResponse prenotaCampo(int id_campo, String data, int time, int idA, Integer idB, int tipoprenotazione) {
+        RequestResponse r = new RequestResponse();
+
+        Date sqlDate = Date.valueOf(data);
+
+        String query = "";
+        if (tipoprenotazione == 0 || tipoprenotazione == 1) {
+            query = "INSERT INTO prenotazionecampo (id_campo,data,orario,id_giocatore_1,tipoprenotazione) VALUES (?,?,?,?,?);";
+        } else if (tipoprenotazione == 2 || tipoprenotazione == 3) {
+            query = "INSERT INTO prenotazionecampo (id_campo,data,orario,id_giocatore_1, id_maestro,tipoprenotazione) VALUES (?,?,?,?,?,?);";
+        }
+
+        System.out.println(query);
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            if(tipoprenotazione == 0 || tipoprenotazione == 1){
+                stmt.setInt(1, id_campo);
+                stmt.setDate(2, sqlDate);
+                stmt.setInt(3, time);
+                stmt.setInt(4, idA);
+                stmt.setInt(5, tipoprenotazione);
+            } else if(tipoprenotazione == 2 || tipoprenotazione == 3){
+                stmt.setInt(1, id_campo);
+                stmt.setDate(2, sqlDate);
+                stmt.setInt(3, time);
+                stmt.setInt(4, idA);
+                stmt.setInt(5, idB);
+                stmt.setInt(6, tipoprenotazione);
+            }
+
+            int righe_modificate = stmt.executeUpdate();
+
+            if (righe_modificate == 1) {
+                r.esito = true;
+                r.messaggio = "La prenotazione del " + data + " alle ore " + time + ":00 per il campo " + id_campo + " è stata accettata";
+            } else {
+                r.esito = false;
+                r.messaggio = "Prenotazione non eseguita. Per favore, riprova.";
+            }
+        } catch (SQLException e) {
+            r.esito = false;
+            r.messaggio = e.getMessage();
+        }
+        return r;
+    }
 }

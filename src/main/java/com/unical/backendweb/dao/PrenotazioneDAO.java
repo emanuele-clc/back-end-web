@@ -10,4 +10,6 @@ public interface PrenotazioneDAO {
     List<PrenotazioneResponse> findAll(LocalDate data);
     void mergePrenotazioni(List<PrenotazioneResponse> prenotazioni, LocalDate data);
     RequestResponse rimuoviPrenotazione(int id_campo, LocalDate data, int time);
+
+    RequestResponse prenotaCampo(int id, String date, int time, int idA, Integer idB, int tipoprenotazione);
 }

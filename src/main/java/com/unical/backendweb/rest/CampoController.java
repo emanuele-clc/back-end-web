@@ -55,11 +55,7 @@ public class CampoController {
                                         @RequestParam int id_a,
                                         @RequestParam(required = false) Integer id_b,
                                         @RequestParam int tipoprenotazione) {
-        System.out.println(id+":"+date+":"+time+":"+id_a+":"+id_b+":"+tipoprenotazione);
-        RequestResponse r = new RequestResponse();
-        r.esito = true;
-        r.messaggio = "Grande";
-        return r;
+        return campoService.prenotaCampo(id,date,time,id_a,id_b,tipoprenotazione);
     }
 
 }
