@@ -114,8 +114,11 @@ public class PrenotazioneDAOImpl implements PrenotazioneDAO {
         RequestResponse r = new RequestResponse();
         Date sqlDate = Date.valueOf(data);
 
-        String query = "INSERT INTO prenotazionecampo (id_campo, data, orario, id_giocatore_1, id_giocatore_2, tipoprenotazione) " +
-                "VALUES (?, ?, ?, ?, ?, ?);";
+        String query = "INSERT INTO prenotazionecampo (id_campo, data, orario, id_giocatore_1, id_giocatore_2, tipoprenotazione) VALUES (?, ?, ?, ?, ?, ?);";
+
+        if(tipoprenotazione==3){
+            query="INSERT INTO prenotazionecampo (id_campo, data, orario, id_giocatore_1, id_maestro, tipoprenotazione) VALUES (?, ?, ?, ?, ?, ?);";
+        }
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, id_campo);
