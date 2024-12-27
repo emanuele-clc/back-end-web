@@ -118,21 +118,34 @@ public class PrenotazioneDAOImpl implements PrenotazioneDAO {
 
         if(tipoprenotazione==3){
             query="INSERT INTO prenotazionecampo (id_campo, data, orario, id_giocatore_1, id_maestro, tipoprenotazione) VALUES (?, ?, ?, ?, ?, ?);";
+        } else if(tipoprenotazione==2){
+            query="UPDATE public.prenotazionecampo SET id_giocatore_2 = ?, tipoprenotazione = ? WHERE id_campo = ? AND data = ? AND orario = ?;";
         }
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, id_campo);
-            stmt.setDate(2, sqlDate);
-            stmt.setInt(3, time);
-            stmt.setInt(4, idA);
-            stmt.setObject(5, idB != null ? idB : null, java.sql.Types.INTEGER); // Null se idB non fornito
-            stmt.setInt(6, tipoprenotazione);
+            if(tipoprenotazione==2){
+                stmt.setInt(1, idA);
+                stmt.setInt(2, tipoprenotazione);
+                stmt.setInt(3, id_campo);
+                stmt.setDate(4, sqlDate);
+                stmt.setInt(5, time);
+            } else {
+                stmt.setInt(1, id_campo);
+                stmt.setDate(2, sqlDate);
+                stmt.setInt(3, time);
+                stmt.setInt(4, idA);
+                stmt.setObject(5, idB != null ? idB : null, java.sql.Types.INTEGER); // Null se idB non fornito
+                stmt.setInt(6, tipoprenotazione);
+            }
 
             int righe_modificate = stmt.executeUpdate();
 
             if (righe_modificate == 1) {
                 r.esito = true;
                 r.messaggio = "La prenotazione del " + data + " alle ore " + time + ":00 per il campo " + id_campo + " è stata accettata";
+                if(tipoprenotazione==2){
+                    r.messaggio = "Il Giocatore "+ idA + " è stato aggiunto alla partita del " + data + " alle ore " + time + ":00 per il campo " + id_campo;
+                }
             } else {
                 r.esito = false;
                 r.messaggio = "Prenotazione non eseguita. Per favore, riprova.";
