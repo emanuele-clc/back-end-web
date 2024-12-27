@@ -112,32 +112,18 @@ public class PrenotazioneDAOImpl implements PrenotazioneDAO {
     @Override
     public RequestResponse prenotaCampo(int id_campo, String data, int time, int idA, Integer idB, int tipoprenotazione) {
         RequestResponse r = new RequestResponse();
-
         Date sqlDate = Date.valueOf(data);
 
-        String query = "";
-        if (tipoprenotazione == 0 || tipoprenotazione == 1) {
-            query = "INSERT INTO prenotazionecampo (id_campo,data,orario,id_giocatore_1,tipoprenotazione) VALUES (?,?,?,?,?);";
-        } else if (tipoprenotazione == 2 || tipoprenotazione == 3) {
-            query = "INSERT INTO prenotazionecampo (id_campo,data,orario,id_giocatore_1, id_maestro,tipoprenotazione) VALUES (?,?,?,?,?,?);";
-        }
+        String query = "INSERT INTO prenotazionecampo (id_campo, data, orario, id_giocatore_1, id_giocatore_2, tipoprenotazione) " +
+                "VALUES (?, ?, ?, ?, ?, ?);";
 
-        System.out.println(query);
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            if(tipoprenotazione == 0 || tipoprenotazione == 1){
-                stmt.setInt(1, id_campo);
-                stmt.setDate(2, sqlDate);
-                stmt.setInt(3, time);
-                stmt.setInt(4, idA);
-                stmt.setInt(5, tipoprenotazione);
-            } else if(tipoprenotazione == 2 || tipoprenotazione == 3){
-                stmt.setInt(1, id_campo);
-                stmt.setDate(2, sqlDate);
-                stmt.setInt(3, time);
-                stmt.setInt(4, idA);
-                stmt.setInt(5, idB);
-                stmt.setInt(6, tipoprenotazione);
-            }
+            stmt.setInt(1, id_campo);
+            stmt.setDate(2, sqlDate);
+            stmt.setInt(3, time);
+            stmt.setInt(4, idA);
+            stmt.setObject(5, idB != null ? idB : null, java.sql.Types.INTEGER); // Null se idB non fornito
+            stmt.setInt(6, tipoprenotazione);
 
             int righe_modificate = stmt.executeUpdate();
 
@@ -154,4 +140,5 @@ public class PrenotazioneDAOImpl implements PrenotazioneDAO {
         }
         return r;
     }
+
 }
