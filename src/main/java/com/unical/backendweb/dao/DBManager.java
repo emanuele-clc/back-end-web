@@ -9,7 +9,7 @@ public class DBManager {
 
     private static final String URL = "jdbc:postgresql://localhost:5432/progetto";
     private static final String USER = "postgres";
-    private static final String PASSWORD = "axelblaze"; //provapush
+    private static final String PASSWORD = "qazwsx"; //provapush
 
     static Connection con = null;
     public static Connection getConnection(){
