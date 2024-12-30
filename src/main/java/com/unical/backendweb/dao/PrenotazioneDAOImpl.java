@@ -134,7 +134,7 @@ public class PrenotazioneDAOImpl implements PrenotazioneDAO {
                 stmt.setDate(2, sqlDate);
                 stmt.setInt(3, time);
                 stmt.setInt(4, idA);
-                stmt.setObject(5, idB != 0 ? idB : null, java.sql.Types.INTEGER); // Null se idB non fornito
+                stmt.setObject(5, idB != 0 ? idB : null, java.sql.Types.INTEGER); // Null se idB non fornito (==0)
                 stmt.setInt(6, tipoprenotazione);
             }
 
